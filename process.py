@@ -1,5 +1,5 @@
 # II модуль имитации процессов
-import subprocess, os, ctypes, sys, psutil, shutil
+import subprocess, os, shutil
 pr_catalog = ['VBoxSerice.exe', 'VBoxTray.exe', 'Wireshark.exe', 'ProcessHacker.exe', 'ghidra.exe']
 active_pr = []
 path_ =r'C:\ybc'
@@ -12,7 +12,12 @@ def start_process():
     c =0
     while c != 5:
         shutil.copy('C:\Windows\System32\ping.exe', os.path.join(path_,pr_catalog[c]))
-        fake_path= os.path.join(path_,pr_catalog[c])
+        fake_path = os.path.join(path_,pr_catalog[c])
         pr = subprocess.Popen([fake_path, '-t', '127.0.0.1'], creationflags=subprocess.CREATE_NO_WINDOW)
         active_pr.append(pr)
         c+=1
+        
+def stop_process():
+    for pr in active_pr:
+        pr.terminate() 
+    shutil.rmtree(path_)
